@@ -1,0 +1,83 @@
+
+For insert values in MongoDb
+==================================
+
+use testNested;
+db.users.drop();
+
+db.createCollection('users',{
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      additionalProperties: false,
+      required: ["network"],
+      properties: {
+        _id : {
+          bsonType: "objectId"
+        },
+        network : {
+          bsonType: "object",
+          additionalProperties: false,
+          required: ["parentId"],
+          properties: {
+            parentId : {
+              bsonType: "objectId"
+            }
+          }
+        }
+      }
+    }
+  },
+ "validationAction" : "error"
+});
+
+
+db.users.insert({
+  _id: ObjectId("5c9a013fcf1448b9d885e016"),
+  network : {
+    parentId : ObjectId("5c9a013fcf1448b9d885e015")
+  }
+})
+
+db.users.insert({
+  _id: ObjectId("5c9a013fcf1448b9d885e017"),
+  network : {
+    parentId : ObjectId("5c9a013fcf1448b9d885e015")
+  }
+})
+
+db.users.insert({
+  _id: ObjectId("5c9a013fcf1448b9d885e018"),
+  network : {
+    parentId : ObjectId("5c9a013fcf1448b9d885e017")
+  }
+})
+
+
+run graphql
+===========================
+npm install
+npm run server
+open localhost:4099/graphql
+
+query all users:
+-------------------------
+query allUserInDb {
+  allusers{
+    _id
+    network {
+      parentId
+    }
+  }
+}
+
+query one user
+-------------------------
+query oneUserInDb {
+  oneuser(_id:"5c9a013fcf1448b9d885e016"){
+    _id
+    network {
+      parentId
+    }
+  }
+}
