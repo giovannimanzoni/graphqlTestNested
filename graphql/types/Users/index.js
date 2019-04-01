@@ -12,5 +12,6 @@ export default `
     type Query {
       allusers: [Users!]!
       oneuser(_id: ID!): Users
+      findUserByParentId(parentId: ID!) : Users
     }
 `;

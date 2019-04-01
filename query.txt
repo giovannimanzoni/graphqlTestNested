@@ -81,3 +81,15 @@ query oneUserInDb {
     }
   }
 }
+
+query findUserByParentId {
+  findUserByParentId(parentId:"5c9a013fcf1448b9d885e015"){
+    _id
+    network {
+      parentId
+    }
+  }
+}
+
+
+
